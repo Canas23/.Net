@@ -1,0 +1,225 @@
+Juan Pablo Florez Huertas
+Juan Esteban Cañas Garcia
+
+punto 1
+
+using System;
+public interface Habilidad
+{
+    int ataca();
+    double defensa();
+}
+public abstract class Pokemon
+{
+    public string Nombre { get;set;}
+    public string Tipo { get;set;}
+    public int Defensa { get;set;}
+
+    Pokemon(string nombre, string tipo, int defensa)
+    {
+        Nombre = nombre;
+        Tipo = tipo;
+        Defensa = defensa;
+    }
+}
+public class Pikachu : Pokemon
+{
+    public Pikachu() : base("Pikachu", "Trueno", 30)
+    {
+    }
+
+    public Habilidad Ataque()
+    {
+        return new ataque();
+    }
+
+    public Habilidad Defensa()
+    {
+        return new defensa();
+    }
+}
+
+public class Ataque : Habilidad
+{
+    private Random random = new Random();
+
+    public int Accion()
+    {
+        return random.Next(50);
+    }
+}
+
+public class Defensa : Habilidad
+{
+    public double Accion()
+    {
+        return 0.12;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+
+        Pokemon pokemon1 = new Pikachu("Pikachu", "Trueno", 25);
+        Pokemon pokemon2 = new Squirtle("Squirtle","Agua", 35);
+
+    
+        for (int turno = 1; turno <= 3; turno++)
+        {
+            Console.WriteLine($"Turno {turno}:");
+
+            
+            double ataquePokemon1 = pokemon1.Ataque().Accion();
+            double defensaPokemon2 = pokemon2.Defensa().Accion();
+            double dañoPokemon1 = ataquePokemon1 * defensaPokemon2;
+            Console.WriteLine($"{pokemon1.Nombre} ataca con {ataque_Pokemon1} y {pokemon2.Nombre} se defiende con {defensa_Pokemon2}.");
+            Console.WriteLine($"{pokemon1.Nombre} causa {daño_Pokemon1} de daño a {pokemon2.Nombre}.");
+
+            
+            double ataquePokemon2 = pokemon2.Ataque().Accion();
+            double defensaPokemon1 = pokemon1.Defensa().Accion();
+            double dañoPokemon2 = ataquePokemon2 * defensaPokemon1;
+            Console.WriteLine($"{pokemon2.Nombre} ataca con {ataque_Pokemon2} y {pokemon1.Nombre} se defiende con {defensa_Pokemon1}.");
+            Console.WriteLine($"{pokemon2.Nombre} causa {daño_Pokemon2} de daño a {pokemon1.Nombre}.");
+
+            if (dañoPokemon1 > dañoPokemo2)
+            {
+                Console.WriteLine($"{pokemon1.Nombre} gana este turno.");
+            }
+            else if (dañoPokemon2 > dañoPokemon1)
+            {
+                Console.WriteLine($"{pokemon2.Nombre} gana este turno.");
+            }
+            else
+            {
+                Console.WriteLine("Este turno ha quedado en empate");
+            }
+
+            Console.WriteLine();
+        }
+
+        int victoria_Pokemon1 = 0;
+        int victoria_Pokemon2 = 0;
+        for (int turno = 1; turno <= 3; turno++)
+        {
+            double ataque_Pokemon1 = pokemon1.Ataque().Accion();
+            double defensa_Pokemon2 = pokemon2.Defensa().Accion();
+            double daño_Pokemon1 = ataque_Pokemon1 * defensa_Pokemon2;
+
+            double ataque_Pokemon2 = pokemon2.Ataque().Accion();
+            double defensa_Pokemon1 = pokemon1.Defensa().Accion();
+            double daño_Pokemon2 = ataque_Pokemon2 * defensa_Pokemon1;
+
+            if (daño_Pokemon1 > daño_Pokemon2)
+            {
+                victoria_Pokemon1++;
+            }
+            else if (daño_Pokemon2 > daño_Pokemon1)
+            {
+                victoria_Pokemon2++;
+            }
+        }
+
+        if (victoria_Pokemon1 > victoria_Pokemon2)
+        {
+            Console.WriteLine($"{pokemon1.Nombre} Es el vencedor, El {pokemon2.nombre} ha sido vencido");
+        }
+        else if (victoria_Pokemon2 > victoria_Pokemon1)
+        {
+            Console.WriteLine($"{pokemon2.Nombre} Es el vencedor, El {pokemon1.nombre} ha sido vencido");
+        }
+        else
+        {
+            Console.WriteLine("Ninguno Pokemon fue vencido, el enfrentamiento queda empatado");
+        }
+    }
+}
+
+
+punto 2
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        const int JUGADORES = 3;
+
+        List<Jugador> jugadores = new List<Jugador>
+        {
+            new Jugador("Jugador 1", 2),
+            new Jugador("Jugador 2", 3),
+            new Jugador("Jugador 3", 4),
+            new Jugador("Jugador 4", 5),
+            new Jugador("Jugador 5", 5),
+            new Jugador("Jugador 6", 7)
+        };
+
+        Equipo equipo1 = CrearEquipoAleatorio(JUGADORES, jugadores);
+        Equipo equipo2 = CrearEquipoAleatorio(JUGADORES, jugadores);
+
+        Equipo ganador = Equipo.CalcularGanador(equipo1, equipo2);
+
+        Console.WriteLine("El equipo que gano es: " + ganador.Nombre);
+    }
+
+    static Equipo CrearEquipoAleatorio(int numJugadores, List<Jugador> jugadores)
+    {
+        Random random = new Random();
+        Equipo equipo = new Equipo();
+
+        for (int i = 0; i < numJugadores; i++)
+        {
+            int index = random.Next(jugadores.Count);
+            Jugador seleccionJugador = jugadores[index];
+            equipo.AgregarJugador(seleccionJugador);
+            jugadores.RemoveAt(index);
+        }
+
+        return equipo;
+    }
+}
+class Jugador
+{
+    public string Nombre { get; }
+    public int Rendimiento { get; }
+
+    public Jugador(string nombre, int rendimiento)
+    {
+        Nombre = nombre;
+        Rendimiento = rendimiento;
+    }
+}
+
+class Equipo
+{
+    public string Nombre { get; private set; }
+    private List<Jugador> jugadores = new List<Jugador>();
+
+    public void AgregarJugador(Jugador jugador)
+    {
+        jugadores.Add(jugador);
+    }
+
+    public static Equipo CalcularGanador(Equipo equipo1, Equipo equipo2)
+    {
+        int rendimientoEquipo1 = equipo1.jugadores.Sum(j => j.Rendimiento);
+        int rendimientoEquipo2 = equipo2.jugadores.Sum(j => j.Rendimiento);
+
+        if (rendimientoEquipo1 > rendimientoEquipo2)
+        {
+            equipo1.Nombre = "Equipo 1";
+            return equipo1;
+        }
+        else
+        {
+            equipo2.Nombre = "Equipo 2";
+            return equipo2;
+        }
+    }
+}
+
+
